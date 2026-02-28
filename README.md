@@ -131,7 +131,7 @@ The application requires player game statistics for predictions. To load data:
 2. Run the management command:
    ```bash
    cd backend
-   python manage.py load_player_data path/to/player_data.csv
+   python manage.py load_player_data --years 2024 2025
    ```
 
 The command will:
