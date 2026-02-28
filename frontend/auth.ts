@@ -5,22 +5,38 @@ import { DynamoDB, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb"
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb"
 import { DynamoDBAdapter } from "@auth/dynamodb-adapter"
  
-// AWS DynamoDB configuration for next-auth
-const config: DynamoDBClientConfig = {
-  credentials: {
-    accessKeyId: process.env.AUTH_DYNAMODB_ID!,
-    secretAccessKey: process.env.AUTH_DYNAMODB_SECRET!,
-  },
-  region: process.env.AUTH_DYNAMODB_REGION!,
+// Check if DynamoDB credentials are configured
+const hasDynamoDBConfig = !!(
+  process.env.AUTH_DYNAMODB_ID &&
+  process.env.AUTH_DYNAMODB_SECRET &&
+  process.env.AUTH_DYNAMODB_REGION
+);
+
+// AWS DynamoDB configuration for next-auth (optional)
+let adapter = undefined;
+
+if (hasDynamoDBConfig) {
+  const config: DynamoDBClientConfig = {
+    credentials: {
+      accessKeyId: process.env.AUTH_DYNAMODB_ID!,
+      secretAccessKey: process.env.AUTH_DYNAMODB_SECRET!,
+    },
+    region: process.env.AUTH_DYNAMODB_REGION!,
+  }
+  
+  const client = DynamoDBDocument.from(new DynamoDB(config), {
+    marshallOptions: {
+      convertEmptyValues: true,
+      removeUndefinedValues: true,
+      convertClassInstanceToMap: true,
+    },
+  });
+  
+  adapter = DynamoDBAdapter(client, { tableName: "users" });
+  console.log("DynamoDB adapter enabled - users will be persisted to database");
+} else {
+  console.log("DynamoDB adapter disabled - using JWT-only sessions (no persistence)");
 }
- 
-const client = DynamoDBDocument.from(new DynamoDB(config), {
-  marshallOptions: {
-    convertEmptyValues: true,
-    removeUndefinedValues: true,
-    convertClassInstanceToMap: true,
-  },
-})
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
@@ -40,7 +56,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       }
     }),
   ],
-  adapter: DynamoDBAdapter(client, { tableName: "users" }),
+  adapter: adapter,
+  session: {
+    strategy: hasDynamoDBConfig ? "database" : "jwt",
+  },
   
   callbacks: {
     async jwt({ token, account, user }) {
@@ -58,15 +77,24 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       // so guard property access to avoid runtime TypeErrors which surface as SessionTokenError.
       try {
         if (token) {
+          // JWT session mode (no database) - data comes from token
           (session as any).accessToken = (token as any).accessToken ?? null;
           (session as any).provider = (token as any).provider ?? null;
           (session as any).userId = (token as any).id ?? null;
+          
+          // In JWT mode, also attach user.id for consistency
+          if (session.user && (token as any).id) {
+            session.user.id = (token as any).id;
+          }
         } else if (user) {
-          // When token isn't available but we have a user (adapter-backed session),
-          // attach any useful information from the user record if present.
+          // Database session mode (with adapter) - data comes from user record
           (session as any).provider = (user as any).provider ?? null;
           (session as any).userId = user.id ?? null;
           (session as any).accessToken = null;
+          
+          if (session.user) {
+            session.user.id = user.id;
+          }
         } else {
           (session as any).accessToken = null;
           (session as any).provider = null;
@@ -91,17 +119,19 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         userId: user.id,
         email: user.email,
         provider: account?.provider,
-        name: user.name
+        name: user.name,
+        persistedToDatabase: hasDynamoDBConfig
       });
       
-      // DynamoDB adapter automatically handles user creation
-      // This event is just for logging/monitoring purposes
+      // Note: If DynamoDB adapter is enabled, it automatically handles user creation
+      // If disabled, user data is only stored in JWT token (not persisted)
     },
     async createUser({ user }) {
-      console.log('New user created in DynamoDB:', {
+      console.log('New user created:', {
         userId: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
+        location: hasDynamoDBConfig ? 'DynamoDB' : 'JWT token only (not persisted)'
       });
     }
   },

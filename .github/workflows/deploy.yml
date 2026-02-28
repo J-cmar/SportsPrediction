@@ -1,0 +1,39 @@
+name: Deploy to EC2
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch: # Allows manual triggering
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup SSH key
+              uses: webfactory/ssh-agent@v0.8.0
+              with:
+                  ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+            - name: Add EC2 to known hosts
+              run: |
+                  ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+            - name: Deploy to EC2
+              run: |
+                  ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+                    # Run the existing deploy script (located outside project directory)
+                    chmod +x ~/deploy.sh
+                    ~/deploy.sh
+                  EOF
+
+            - name: Verify deployment
+              run: |
+                  ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+                    # Optional: Check if services are running
+                    # systemctl status your-service-name
+                    echo "Deployment completed successfully!"
+                  EOF
