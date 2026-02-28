@@ -471,10 +471,10 @@ export default function BettingForm({ session }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`group relative w-full py-5 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform overflow-hidden ${
+                className={`group relative w-full py-5 px-6 rounded-xl font-bold text-lg transition-all overflow-hidden ${
                   isSubmitting
                     ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 hover:scale-[1.02] shadow-xl hover:shadow-2xl active:scale-[0.98]"
+                    : "bg-blue-600 hover:bg-blue-700 shadow-xl hover:shadow-2xl"
                 } text-white`}
               >
                 <span className="relative z-10 flex items-center justify-center gap-3">
@@ -498,9 +498,6 @@ export default function BettingForm({ session }) {
                     </>
                   )}
                 </span>
-                {!isSubmitting && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                )}
               </button>
             </div>
           </form>

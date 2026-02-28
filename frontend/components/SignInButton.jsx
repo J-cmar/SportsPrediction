@@ -56,10 +56,10 @@ export default function SignInButton() {
           <button
             onClick={() => handleSignIn("github")}
             disabled={loadingProvider !== null}
-            className={`w-full font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-3 ${
+            className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-3 ${
               loadingProvider === "github"
                 ? "bg-gray-500 text-gray-300 cursor-not-allowed"
-                : "bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-black text-white transform hover:scale-105 shadow-lg hover:shadow-xl"
+                : "bg-gray-900 hover:bg-black text-white shadow-lg"
             }`}
           >
             {loadingProvider === "github" ? (

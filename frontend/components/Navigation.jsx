@@ -89,7 +89,7 @@ export default function Navigation({ session }) {
 						) : (
 							<Link
 								href="/get-started"
-								className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+								className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-lg"
 							>
 								Get Started
 							</Link>
@@ -179,7 +179,7 @@ export default function Navigation({ session }) {
 								) : (
 									<Link
 										href="/"
-										className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full block text-center"
+										className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-lg w-full block text-center"
 									>
 										Get Started
 									</Link>

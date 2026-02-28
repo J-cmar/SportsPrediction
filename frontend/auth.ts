@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
 import { DynamoDB, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb"
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb"
 import { DynamoDBAdapter } from "@auth/dynamodb-adapter"
@@ -13,7 +12,7 @@ const hasDynamoDBConfig = !!(
 );
 
 // AWS DynamoDB configuration for next-auth (optional)
-let adapter = undefined;
+let adapter: ReturnType<typeof DynamoDBAdapter> | undefined = undefined;
 
 if (hasDynamoDBConfig) {
   const config: DynamoDBClientConfig = {
@@ -43,17 +42,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     GitHubProvider({
       clientId: process.env.AUTH_GITHUB_ID!,
       clientSecret: process.env.AUTH_GITHUB_SECRET!,
-    }),
-    GoogleProvider({
-      clientId: process.env.AUTH_GOOGLE_ID!,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
-        }
-      }
     }),
   ],
   adapter: adapter,

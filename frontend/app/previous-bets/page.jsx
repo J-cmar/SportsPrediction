@@ -331,7 +331,7 @@ export default function PreviousBetsPage() {
 						<p className="text-red-700 mb-6">{error}</p>
 						<button 
 							onClick={() => typeof window !== 'undefined' && window.location.reload()}
-							className="inline-block bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-3 px-8 rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 shadow-lg"
+							className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg"
 						>
 							Try Again
 						</button>
@@ -363,7 +363,7 @@ export default function PreviousBetsPage() {
 						</p>
 						<a 
 							href="/get-started"
-							className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-8 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+							className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg"
 						>
 							Create Your First Bet
 						</a>
