@@ -1,4 +1,4 @@
-# Hedge Your Bets - AI-Powered Sports Betting Analysis
+# Hedge Your Bets - ML-Powered Sports Betting Analysis
 
 **Hedge Your Bets** is a web-based service designed to assist in sports betting by leveraging AI and machine learning models to analyze betting scenarios and provide insights on bet quality and value.
 
