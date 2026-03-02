@@ -3,7 +3,8 @@ __pycache__/
 *.py[cod]
 *.sqlite3
 venv/
-.env*
+.env
+.env.local
 
 # Node / Next.js
 node_modules/
@@ -15,6 +16,3 @@ dist/
 # OS files
 .DS_Store
 Thumbs.db
-
-# next auth
-.env.local
