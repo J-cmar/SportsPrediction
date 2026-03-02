@@ -24,7 +24,7 @@ jobs:
 
             - name: Deploy to EC2
               run: |
-                  ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+                  ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
                     # Run the existing deploy script (located outside project directory)
                     chmod +x ~/deploy.sh
                     ~/deploy.sh
@@ -32,7 +32,7 @@ jobs:
 
             - name: Verify deployment
               run: |
-                  ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+                  ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
                     # Optional: Check if services are running
                     # systemctl status your-service-name
                     echo "Deployment completed successfully!"
