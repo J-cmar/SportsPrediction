@@ -25,8 +25,8 @@ jobs:
             - name: Deploy to EC2
               run: |
                   ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-                    # Run the existing deploy script (located outside project directory)
-                    ~/deploy.sh
+                    # Run the existing deploy script (located outside project directory) 
+                    ~/SportsPrediction/deploy.sh
                   EOF
 
             - name: Verify deployment
