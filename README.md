@@ -2,8 +2,6 @@
 
 **Hedge Your Bets** is a full-stack web application for analyzing NFL player prop bets. Users can input betting scenarios and receive predictions with confidence intervals, win probabilities, and expected value calculations to make informed betting decisions.
 
-**Live Demo**: Visit the deployed application (http://hedgeyourbets.duckdns.org/) _(Recommended for testing)_
-
 ## 🏈 Project Overview
 
 This application provides a comprehensive platform for analyzing NFL betting scenarios with the following features:
@@ -26,10 +24,6 @@ This application provides a comprehensive platform for analyzing NFL betting sce
 
 ## ⚡ Quickstart
 
-### ⭐ Use the Deployed Application (Recommended)
-
-**We strongly recommend using the [live deployed application](http://hedgeyourbets.duckdns.org/) for testing and evaluation.**
-
 The deployed version provides:
 
 - ✅ **Full functionality** - All features including DynamoDB persistence, betting history, and popular bets
@@ -37,8 +31,6 @@ The deployed version provides:
 - ✅ **Complete authentication** - GitHub OAuth with persistent sessions across devices
 - ✅ **No setup required** - Start using immediately without installing dependencies or configuring environment variables
 - ✅ **Production environment** - Deployed on AWS EC2 with automated CI/CD pipeline
-
-**👉 [Visit the deployed app now](http://hedgeyourbets.duckdns.org/)**
 
 ---
 
