@@ -13,6 +13,23 @@ This application provides a comprehensive platform for analyzing NFL betting sce
 - **Real-time Data**: Access to 8,120+ NFL players across QB, RB, WR, and TE positions
 - **Automated Predictions**: Backend uses trained quantile regression models to analyze player performance with confidence intervals
 
+## 🎯 What It Does
+
+**Hedge Your Bets** is a production-ready, full-stack web application designed to evaluate NFL player prop bets. Rather than just returning basic statistics, the platform serves as an automated analytical engine that compares sportsbook lines against machine-learning-derived probability distributions to identify profitable betting edges.
+
+From a user perspective, the platform offers a seamless experience:
+1. **Secure Authentication:** Users log in via GitHub OAuth, with sessions securely persisted across devices.
+2. **Scenario Generation:** Users construct betting scenarios by selecting from a database of over 8,120 historical and active NFL players, choosing specific prop actions (e.g., Passing Yards, Receptions), and inputting the sportsbook's line.
+3. **Real-Time Analysis:** The platform instantly processes the request, running inference against trained models to return a definitive Expected Value (EV), win probability, and a concrete betting recommendation, all while tracking the user's scenario history in a cloud database.
+
+## ⚙️ How It Works (System Architecture)
+
+The application is built on a decoupled, highly scalable architecture that bridges a modern React frontend with a robust Python backend and automated deployment infrastructure:
+
+* **Full-Stack Data Flow:** The user interface is built with **Next.js 14 (App Router)**, handling state management and rendering. API calls are intelligently routed through an **Nginx** reverse proxy. Next.js handles internal API routes (like session management and caching), while heavy data lifting and model inference are proxied directly to a **Django REST Framework** backend.
+* **Hybrid Database Strategy:** The platform utilizes two distinct database paradigms to optimize for different access patterns. **AWS DynamoDB** (NoSQL) is implemented using a Single-Table Design to handle high-velocity reads/writes for user sessions, authentication tokens, and personalized betting histories. Meanwhile, a relational database manages the highly structured, heavily queried historical NFL player data.
+* **Production Infrastructure & CI/CD:** The entire application is deployed on an **AWS EC2** instance running Ubuntu. **PM2** manages the dual Next.js and Django node/python processes to ensure zero-downtime restarts and process monitoring. The deployment lifecycle is fully automated via **GitHub Actions**; pushes to the main branch trigger a CI/CD pipeline that authenticates via SSH, pulls the latest code, rebuilds dependencies, and restarts the application without manual intervention.
+  
 ### Supported Bet Types
 
 - **QB**: Passing Yards, Passing TDs, Completions, Passing Interceptions, Rushing Yards
